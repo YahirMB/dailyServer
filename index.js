@@ -11,9 +11,14 @@ router.get('/', function(request, response) {
 aplicacion.use(bodyParser.json()); 
 
 //incluimos el archivo en el que se almacenan las rutas de cada entidad
-const UserRoute = require("./server/routes/role");
+const roleRoute = require("./server/routes/role");
+const userRoute = require("./server/routes/user.route");
 
-aplicacion.use("/api/role", UserRoute);
+
+
+
+aplicacion.use("/api/role", roleRoute);
+aplicacion.use("/api/user", userRoute);
 
 
 

@@ -61,7 +61,6 @@ const User = sequelize.define('User', {
     Phone: {
         type: DataTypes.STRING,
         allowNull: false,
-        unique: true,
         validate: {
             notNull: {
                 msg: 'El campo Telefono no puede ser nulo.'
@@ -72,7 +71,7 @@ const User = sequelize.define('User', {
         }
     },
     IdRol: {
-        type: DataTypes.NUMBER,
+        type: DataTypes.INTEGER,
         allowNull: false,
         validate: {
             notNull: {

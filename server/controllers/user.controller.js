@@ -25,7 +25,7 @@ userCrtl.finUserByCredentials = async (req, res) => {
         if (!user) {
             res.json({
                 status: 404,
-                message: 'No existe ese usuario o correo',
+                message: 'No existe este correo, verifica tu correo',
                 result: user
             })
         } else {
@@ -44,7 +44,7 @@ userCrtl.finUserByCredentials = async (req, res) => {
 
                 res.json({
                     status: 401,
-                    message: 'Credenciales incorrectas',
+                    message: 'La contraseña que ingresaste es incorrecta',
                     result: []
                 })
             }

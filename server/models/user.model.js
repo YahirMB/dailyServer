@@ -60,18 +60,12 @@ const User = sequelize.define('User', {
     },
     Phone: {
         type: DataTypes.STRING,
-        allowNull: false,
-        validate: {
-            notNull: {
-                msg: 'El campo Telefono no puede ser nulo.'
-            },
-            notEmpty: {
-                msg: 'El campo Telefono no puede estar vacío.'
-            }
-        }
+        allowNull: true,
     },
     IdRol: {
+        
         type: DataTypes.INTEGER,
+        defaultValue: 1,
         allowNull: false,
         validate: {
             notNull: {

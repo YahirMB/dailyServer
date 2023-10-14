@@ -25,6 +25,40 @@ noteCrtl.findAllNote = async (req, res) => {
 
 }
 
+
+noteCrtl.findNoteByUser = async (req,res) => {
+
+    try {
+        const data = await Note.findAll({where: { IdUser:req.params.id}})
+
+
+
+        if (data.length == 0) {
+            res.json({
+                status: 404,
+                message: 'No tienes notas agendadas',
+                result: data
+            })
+        }else{
+
+            
+            res.json({
+            status: 200,
+            message: 'Lista de notas por usuario',
+            result: data
+        })
+    }
+
+    } catch (error) {
+        res.json({
+            status: 400,
+            message: 'Hubo un error en obtener todas las notas del usuario',
+            result: error.message
+        })
+    }
+
+}
+
 //create a new note
 noteCrtl.createNote = async (req, res) => {
 

@@ -76,6 +76,10 @@ const User = sequelize.define('User', {
             }
         }
     },
+    Img: {
+        type:DataTypes.STRING,
+        allowNull: true,
+    }
 },{
     tableName : 'user',
     timestamps: false,

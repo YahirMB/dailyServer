@@ -69,7 +69,7 @@ userCrtl.signUp = async (req, res) => {
 
     try {
 
-       const existingUser =  await User.findOne({where:{Email:req.body.Email}})
+        const existingUser = await User.findOne({ where: { Email: req.body.Email } })
 
         if (!existingUser) {
 
@@ -109,24 +109,24 @@ userCrtl.updateProfile = async (req, res) => {
             where: { Id: req.params.idUser },
         })
 
-        if(data == 1){
+        if (data == 1) {
             // todo consultar y regresar la data actualizada 
 
-            const userModified = await User.findOne({where:{Id: req.params.idUser}})
-            
+            const userModified = await User.findOne({ where: { Id: req.params.idUser } })
+
             res.json({
                 status: 200,
                 message: 'Se actulizo usuario correctamente',
                 result: userModified
             })
-        }else{
+        } else {
             res.json({
                 status: 400,
                 message: 'No hay datos nuevos que actualizar',
                 result: data
             })
         }
-            
+
     } catch (error) {
 
         res.json({
@@ -137,6 +137,31 @@ userCrtl.updateProfile = async (req, res) => {
 
     }
 
+
+}
+
+//update img When is created
+
+userCrtl.updateImgByUser = async (req, res) => {
+    const data = await User.update(req.body ,{ where: { Email: req.params.email } })
+
+    if (data == 1) {
+        // todo consultar y regresar la data actualizada 
+
+        const userModified = await User.findOne({ where: { Email: req.params.email } })
+
+        res.json({
+            status: 200,
+            message: 'Se actulizo tu img correctamente',
+            result: userModified
+        })
+    } else {
+        res.json({
+            status: 400,
+            message: 'No hay Imagen para actualizar',
+            result: data
+        })
+    }
 
 }
 

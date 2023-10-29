@@ -1,4 +1,6 @@
+const transporter = require("../../config.email");
 const User = require("../models/user.model")
+const bcrypt = require('bcrypt');
 
 
 let userCrtl = {}
@@ -164,5 +166,98 @@ userCrtl.updateImgByUser = async (req, res) => {
     }
 
 }
+
+//recover account
+userCrtl.recoverAccount = async (req, res) => {
+    const { email, code } = req.body;
+
+    const emailExisting = await User.findOne({ where: { Email: req.body.email } })
+
+    if (!emailExisting) {
+        res.json({
+            status: 404,
+            message: 'Este correo no esta registrado',
+            result: []
+        })
+    } else {
+
+        const customMessage = `Hola, este correo es para la recuperación de la contraseña de tu cuenta.
+        <br>
+        El codigo para recuperar tu cuenta es : 
+        <h1><b>${code}</b></h1> <br><br> <h4>Nota:</h4> El código proporcionado tiene un tiempo de expiración de 2 minutos. Si no solicitste el cambio de contraseña para tu cuenta, favor de ignorar este correo. <br> Este código es privado, no lo compartas con NADIE.
+        <br>
+    <br>
+    <h3><p>Saludos. Atte: Daily Plan Support<p></h3>
+    `
+        // Configura el contenido del correo
+        const mailOptions = {
+            from: 'dailylansoporte@gmail.com',
+            to: email,
+            subject: "Recuperacion de cuenta",
+            html: customMessage,
+        };
+
+
+        // Envía el correo
+        transporter.sendMail(mailOptions, (error, info) => {
+            if (error) {
+                res.json({
+                    status: 400,
+                    message: 'Error al enviar el correo.',
+                })
+
+            } else {
+                res.json({
+                    status: 200,
+                    message: 'Correo enviado con exitosamente',
+                    recoverCode:code
+                })
+            }
+        });
+    }
+}
+
+//restore password by userEmail
+userCrtl.restorePassword = async (req, res) => {
+
+    try {
+
+        const Password = await bcrypt.hash(req.body.password, 10);
+
+        console.log(Password)
+
+        const data = await User.update({Password}, { where: { Email: req.body.email } })
+
+    if (data == 1) {
+        // todo consultar y regresar la data actualizada 
+
+        const userModified = await User.findOne({ where: { Email: req.body.email } })
+
+        res.json({
+            status: 200,
+            message: 'Se actulizo tu contraseña correctamente',
+            result: userModified
+        })
+    } else {
+        res.json({
+            status: 400,
+            message: 'No hay se pudo actualizar',
+            result: []
+        })
+    }
+
+    } catch (error) {
+        res.json({
+            status: 400,
+            message: 'Algo paso con el servidor, no pudo actualizar la contraseña',
+            error,
+            result: []
+        })
+    }
+
+    
+}
+
+
 
 module.exports = userCrtl;

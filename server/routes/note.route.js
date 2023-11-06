@@ -9,5 +9,6 @@ router.post('/createNote',noteCrtl.createNote);
 router.put('/updateNote',noteCrtl.updateNote);
 router.delete('/deleteNote/:id',noteCrtl.deleteNote);
 router.get('/getAllNotesByUser/:id',noteCrtl.findNoteByUser);
+router.get('/getAllNotesWithLimit',noteCrtl.findNoteLimit);
 
 module.exports = router

@@ -1,4 +1,5 @@
 const Note = require("../models/note.model");
+const Sequelize = require('sequelize');
 
 const noteCrtl = {}
 
@@ -25,11 +26,61 @@ noteCrtl.findAllNote = async (req, res) => {
 
 }
 
+//get note with limit 3 for day 
 
-noteCrtl.findNoteByUser = async (req,res) => {
+noteCrtl.findNoteLimit = async (req, res) => {
+    try {
+        const notesByDate = {};
+        const data = await Note.findAll({
+            where: { idUser: 1 },
+            order: [['ExpiriationDate', 'ASC']]
+        });
+
+
+        data.forEach(note => {
+
+            const date = note.dataValues.ExpiriationDate.toString() // Obtener la fecha como cadena
+            const d =  dateForm(date);
+            
+            if (!notesByDate[date]) {
+                notesByDate[date] = 0;
+                notesByDate[d] = [];
+            }
+
+            if (notesByDate[date] < 3) {
+                notesByDate[d].push(note)
+                notesByDate[date]++;
+            }
+
+        });
+
+
+    
+        for (const key in notesByDate) {
+            
+            if(typeof notesByDate[key] === "number"){
+                delete notesByDate[key];
+            }
+        }
+
+        res.json({
+            status: 200,
+            message: 'Lista de notas recibida',
+            result: notesByDate
+        })
+    } catch (error) {
+        res.json({
+            status: 400,
+            message: 'Hubo un error en obtener todas las notas',
+            result: error.message
+        })
+    }
+}
+
+noteCrtl.findNoteByUser = async (req, res) => {
 
     try {
-        const data = await Note.findAll({where: { IdUser:req.params.id}})
+        const data = await Note.findAll({ where: { IdUser: req.params.id } })
 
 
 
@@ -39,15 +90,15 @@ noteCrtl.findNoteByUser = async (req,res) => {
                 message: 'No tienes notas agendadas',
                 result: data
             })
-        }else{
+        } else {
 
-            
+
             res.json({
-            status: 200,
-            message: 'Lista de notas por usuario',
-            result: data
-        })
-    }
+                status: 200,
+                message: 'Lista de notas por usuario',
+                result: data
+            })
+        }
 
     } catch (error) {
         res.json({
@@ -83,38 +134,38 @@ noteCrtl.createNote = async (req, res) => {
 
 //update existing note by Id
 
-noteCrtl.updateNote = async (req,res) => {
-    
+noteCrtl.updateNote = async (req, res) => {
+
     try {
-        const data = await Note.update(req.body,{
-            where:{
-                Id:req.body.IdNote
+        const data = await Note.update(req.body, {
+            where: {
+                Id: req.body.IdNote
             }
         })
-        
+
         res.json({
             status: 200,
             message: 'Se actualizo la nota',
             result: data
         })
-        
+
     } catch (error) {
-         
+
         res.json({
             status: 400,
             message: 'Hubo un error en actualizar la nota',
             result: error.message
         })
-        
+
     }
 }
 
 //delete note by Id
 
-noteCrtl.deleteNote = async (req,res) => {
+noteCrtl.deleteNote = async (req, res) => {
     try {
-       
-        const data = await Note.destroy({where:{Id:req.params.id}})
+
+        const data = await Note.destroy({ where: { Id: req.params.id } })
 
         res.json({
             status: 200,
@@ -129,6 +180,38 @@ noteCrtl.deleteNote = async (req,res) => {
             result: error.message
         })
     }
+}
+
+
+
+const dateForm = (checkDate) => {
+     // Obtener la fecha actual
+     const fechaActual = new Date();
+     // Crear un objeto Date con la fecha de hace una semana
+     const compareDate = new Date(checkDate);
+
+     const diferncia = compareDate - fechaActual 
+     const mayorUnaSemana = 7 * 24 * 60 * 60 * 1000
+
+     // Array con los nombres de los días de la semana
+     const diasSemana = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
+
+     // Obtener el nombre del día de la semana para la fecha actual
+     const nombreDiaActual = diasSemana[compareDate.getDay() + 1];
+
+     if (diferncia > mayorUnaSemana) {
+         const year = compareDate.getFullYear();
+         const month = String(compareDate.getMonth() + 1).padStart(2, '0'); // Asegura que tenga dos dígitos
+         const day = String(compareDate.getDate() + 1).padStart(2, '0'); // Asegura que tenga dos dígitos
+
+        const formDate = `${year}/${month}/${day}`;
+         console.log('Ha pasado una semana desde la fecha actual.',compareDate.getDate());
+         return formDate
+     } else {
+         console.log(`El día de la semana actual es ${nombreDiaActual}.`);
+         return nombreDiaActual
+     }
+
 }
 
 module.exports = noteCrtl;

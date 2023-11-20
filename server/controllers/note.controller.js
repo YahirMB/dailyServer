@@ -33,7 +33,7 @@ noteCrtl.findNoteLimit = async (req, res) => {
         const notesByDate = {};
         const data = await Note.findAll({
             where: { idUser: 1 },
-            order: [['ExpiriationDate', 'ASC']]
+            order: [['ExpiriationDate', 'DESC']]
         });
 
 
@@ -190,22 +190,26 @@ const dateForm = (checkDate) => {
      // Crear un objeto Date con la fecha de hace una semana
      const compareDate = new Date(checkDate);
 
-     const diferncia = compareDate - fechaActual 
+     const diferncia = fechaActual - compareDate ;
      const mayorUnaSemana = 7 * 24 * 60 * 60 * 1000
 
      // Array con los nombres de los días de la semana
-     const diasSemana = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
+     const diasSemana = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado','Domingo'];
 
      // Obtener el nombre del día de la semana para la fecha actual
-     const nombreDiaActual = diasSemana[compareDate.getDay() + 1];
+     
+     
+     const nombreDiaActual = diasSemana[compareDate.getDay()];
+   
 
-     if (diferncia > mayorUnaSemana) {
+
+     if (diferncia > mayorUnaSemana && fechaActual.getMonth) {
          const year = compareDate.getFullYear();
          const month = String(compareDate.getMonth() + 1).padStart(2, '0'); // Asegura que tenga dos dígitos
          const day = String(compareDate.getDate() + 1).padStart(2, '0'); // Asegura que tenga dos dígitos
 
         const formDate = `${year}/${month}/${day}`;
-         console.log('Ha pasado una semana desde la fecha actual.',compareDate.getDate());
+         console.log('Ha pasado una semana desde la fecha actual.',formDate);
          return formDate
      } else {
          console.log(`El día de la semana actual es ${nombreDiaActual}.`);

@@ -36,7 +36,7 @@ const Note = sequelize.define('Note', {
     ExpiriationDate: {
         type: DataTypes.DATE,
         allowNull: false,
-        defaultValue: sequelize.literal('CURRENT_DATE'), // Utiliza CURRENT_TIME como valor predeterminado
+        // defaultValue: sequelize.literal('CURRENT_DATE'), // Utiliza CURRENT_TIME como valor predeterminado
     },
     Location: {
         type: DataTypes.STRING,
@@ -46,7 +46,7 @@ const Note = sequelize.define('Note', {
     CreationHour: {
         type: DataTypes.TIME,
         allowNull: false,
-        defaultValue: sequelize.literal('CURRENT_TIME'), // Utiliza CURRENT_TIME como valor predeterminado
+        // defaultValue: sequelize.literal('CURRENT_TIME'), // Utiliza CURRENT_TIME como valor predeterminado
     },
     IdUser: {
         type: DataTypes.INTEGER,
@@ -63,6 +63,7 @@ const Note = sequelize.define('Note', {
     IdTypeOfNote: {
         type: DataTypes.INTEGER,
         allowNull: false,
+        defaultValue:1,
         validate: {
             notNull: {
                 msg: 'El campo IdTypeOfNote no puede ser nulo.'

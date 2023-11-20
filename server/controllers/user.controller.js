@@ -46,7 +46,7 @@ userCrtl.finUserByCredentials = async (req, res) => {
 
                 res.json({
                     status: 401,
-                    message: 'La contraseña que ingresaste es incorrecta',
+                    message: 'El usuaro que que ingresaste es incorrecto',
                     result: []
                 })
             }
@@ -123,7 +123,7 @@ userCrtl.updateProfile = async (req, res) => {
             })
         } else {
             res.json({
-                status: 400,
+                status: 200,
                 message: 'No hay datos nuevos que actualizar',
                 result: data
             })

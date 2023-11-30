@@ -34,9 +34,8 @@ const Note = sequelize.define('Note', {
         }
     },
     ExpiriationDate: {
-        type: DataTypes.DATE,
+        type: DataTypes.STRING,
         allowNull: false,
-        // defaultValue: sequelize.literal('CURRENT_DATE'), // Utiliza CURRENT_TIME como valor predeterminado
     },
     Location: {
         type: DataTypes.STRING,
@@ -44,7 +43,7 @@ const Note = sequelize.define('Note', {
     },
 
     CreationHour: {
-        type: DataTypes.TIME,
+        type: DataTypes.STRING,
         allowNull: false,
         // defaultValue: sequelize.literal('CURRENT_TIME'), // Utiliza CURRENT_TIME como valor predeterminado
     },

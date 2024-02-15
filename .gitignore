@@ -1,3 +1,5 @@
 # ignorarar los nodemodules
 
 node_modules/
+
+.env

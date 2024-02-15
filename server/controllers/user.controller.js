@@ -46,7 +46,7 @@ userCrtl.finUserByCredentials = async (req, res) => {
 
                 res.json({
                     status: 401,
-                    message: 'El usuaro que que ingresaste es incorrecto',
+                    message: 'El usuario que que ingresaste es incorrecto',
                     result: []
                 })
             }

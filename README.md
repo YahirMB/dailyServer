@@ -6,5 +6,5 @@
 ```Node``` ```Express``` ```Sequelize``` ```Mysql``` ```REST Api```
 
 ## Node modules
-Necestias descargar las depedencias de node modules, con el siguiente comando lo puedes hacer:
+Necesitas descargar las depedencias de node modules con el siguiente comando lo puedes hacer:
 ```nmp i ``` o  ```npm install``` 
